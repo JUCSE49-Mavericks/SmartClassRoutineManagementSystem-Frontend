@@ -28,7 +28,7 @@ import SyllabusUpload from './components/superuser/SyllabusUpload';
 import SyllabusUploadTest from './components/superuser/SyllabusUploadTest';
 import SyllabusFilter from './components/user/SyllabusFilter';
 import CourseDataDisplay from './components/superuser/CourseDataDisplay';
-import ScheduleGenerator from './components/Routine/ScheduleGenerator';
+import RoutineGenerator from './components/Routine/RoutineGenerator';
 import ScheduleViewer from './components/Routine/ScheduleViewer';
 import HolidaysUpload from './components/superuser/HolidaysUpload';
 import HolidayList from './components/superuser/HolidayList';
@@ -97,7 +97,7 @@ function App() {
         <Route path="/filter-syllabus" element={<SyllabusFilter/>}/>
         <Route path="/course-data" element={<CourseDataDisplay/>}/>
 
-        <Route path="/generate-routine" element={<ScheduleGenerator/>}/>
+        <Route path="/generate-routine" element={<RoutineGenerator/>}/>
 
         <Route path="/upload-teacher-image/:teacher_id" element={<UploadTeacherImage/>}/>
         <Route path="/teacher-list" element={<TeacherList/>}/>
