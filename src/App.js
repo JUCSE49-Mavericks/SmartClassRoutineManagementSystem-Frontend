@@ -54,6 +54,10 @@ import EditStaffProfilePage from './pages/superuser/EditStaffProfilePage';
 import SessionDetailsPage from './pages/superuser/SessionDetailsPage';
 import StudentUpdatePage from './pages/superuser/StudentUpdatePage';
 import ExamYearDetailsPage from './pages/superuser/ExamYearDetailsPage';
+
+import CourseDetailsPage from './pages/course/CourseDetailsPage';
+
+
 const PrivateRoute = ({ children }) => {
   return getToken() ? children : <Navigate to="/su-login" />;
 };
@@ -124,6 +128,9 @@ function App() {
         <Route path="/view-calendar-as-user" element={<ScheduleWithHolidays/>}/>
         <Route path="/view-routine-as-user" element={<ScheduleViewerAsUser/>}/>
 
+
+
+        <Route path="/course-details/:course_id" element={<CourseDetailsPage/>} />
 
         {/* Add other routes as needed */}
         <Route path="/" element={<Navigate to="/welcome-page" />} /> 
