@@ -9,7 +9,9 @@ const ExamYearDetails = () => {
     const { exam_year_id } = useParams();
     const [examCommittee, setExamCommittee] = useState([]);
     const [examYearDetails, setExamYearDetails] = useState(null);
-    const [courses, setCourses] = useState([]); 
+    const [courses, setCourses] = useState([]);
+    const [classRepresentative, setClassRepresentative] = useState(null);
+    const [studentProfile, setStudentProfile] = useState(null); // New state for student profile
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -21,12 +23,30 @@ const ExamYearDetails = () => {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setExamYearDetails(examYearResponse.data);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    if (error.response && error.response.status === 401) {
+                        navigate('/login');
+                    }
+                }
+            };
 
+            const fetchExamCommittee = async () => {
+                try {
                     const examCommitteeResponse = await axios.get(`http://localhost:5002/api/exam-committee-exam-year/${exam_year_id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     setExamCommittee(Array.isArray(examCommitteeResponse.data) ? examCommitteeResponse.data : [examCommitteeResponse.data]);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    if (error.response && error.response.status === 401) {
+                        navigate('/login');
+                    }
+                }
+            };
 
+            const fetchCourses = async () => {
+                try {
                     const coursesResponse = await axios.get(`http://localhost:5002/api/courses-exam-year/${exam_year_id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
@@ -39,7 +59,39 @@ const ExamYearDetails = () => {
                 }
             };
 
+            const fetchClassRepresentative = async () => {
+                try {
+                    const crResponse = await axios.get(`http://localhost:5002/api/class-representative/${exam_year_id}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+            
+                    // Assuming crResponse.data is an array and you want the first item
+                    const classRepData = crResponse.data[0];
+                    setClassRepresentative(classRepData);
+            
+                    console.log(classRepData.student_id);
+            
+                    // Fetch student profile if student_id is present
+                    if (classRepData?.student_id) {
+                        const studentProfileResponse = await axios.get(`http://localhost:5002/api/student-profile/${classRepData.student_id}`, {
+                            headers: { Authorization: `Bearer ${token}` }
+                        });
+                        setStudentProfile(studentProfileResponse.data);
+                        console.log(studentProfileResponse.data);
+                    }
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    if (error.response && error.response.status === 401) {
+                        navigate('/login');
+                    }
+                }
+            };
+            
+
             fetchExamDetails();
+            fetchExamCommittee();
+            fetchCourses();
+            fetchClassRepresentative();
         } else {
             navigate('/login');
         }
@@ -75,6 +127,21 @@ const ExamYearDetails = () => {
                     </Row>
                 </Card.Body>
             </Card>
+
+            {/* Display Class Representative Details */}
+            {classRepresentative && studentProfile && (
+                <Card className="mb-4 shadow-lg">
+                    <Card.Header className="bg-primary text-white text-center">
+                        <h4>Class Representative</h4>
+                    </Card.Header>
+                    <Card.Body>
+                        <Row>
+                            <Col>{studentProfile.student.Name}</Col>
+                            <Col>{studentProfile.department.Dept_Name}</Col>
+                        </Row>
+                    </Card.Body>
+                </Card>
+            )}
 
             {/* Display Exam Committee Members */}
             <Card className="mb-4 shadow-lg">
