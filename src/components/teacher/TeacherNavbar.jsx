@@ -29,7 +29,8 @@ const TeacherNavbar = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setData(response.data);
-            setUser(response.data.teacher); // Assuming 'teacher' is the key holding the user data
+            setUser(response.data.teacher);
+            console.log(user);
         } catch (error) {
             console.error('Failed to fetch dashboard data', error);
         }
@@ -41,6 +42,23 @@ const TeacherNavbar = () => {
     const handleClassRoutine = () => {
         navigate('/class-routine-page');
     };
+
+    const handleScheduleClass = () => {
+        
+        navigate(`/schedule-class/${user.teacher_id}`);
+    }
+
+    const handleViewAcademicCalendar = () => {
+        navigate('/view-academic-calendar');
+    }
+
+    const handlePreferredSlots = () => {
+        navigate(`/preferred-slots/${user.teacher_id}`)
+    }
+
+    const handleTeacherProfile = () => {
+        navigate(`/teacher-profile/${user.teacher_id}`);
+    }
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -60,20 +78,31 @@ const TeacherNavbar = () => {
                         <FontAwesomeIcon icon={faHome} className="mr-1" />
                         Home
                     </Nav.Link>
-                    <Nav.Link href="#profile" className="text-light">
+                    <Nav.Link onClick={handleClassRoutine} className="text-light">
                         <FontAwesomeIcon icon={faCalendar} className="mr-1" />
                         Class Routine
                     </Nav.Link>
-                    <Nav.Link href="#courses" className="text-light">
+                    <Nav.Link onClick={handleViewAcademicCalendar} className="text-light">
                         <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
                         Academic Calendar
                     </Nav.Link>
+
+                    <Nav.Link onClick={handleScheduleClass} className="text-light">
+                        <FontAwesomeIcon icon={faCog} className="mr-1" />
+                        Schedule Class
+                    </Nav.Link>
+
+                    <Nav.Link onClick={handlePreferredSlots} className="text-light">
+                        <FontAwesomeIcon icon={faCog} className="mr-1" />
+                        Preferred Slots
+                    </Nav.Link>
+
                     <Nav.Link href="#settings" className="text-light">
                         <FontAwesomeIcon icon={faCog} className="mr-1" />
                         Settings
                     </Nav.Link>
                 </Nav>
-                <Navbar.Text className="mr-3 text-light">
+                <Navbar.Text onClick={handleTeacherProfile} className="mr-3 text-light">
                     <FontAwesomeIcon icon={faUser} className="mr-1" />
                     {user ? `${user.Name}` : 'Loading...'}
                 </Navbar.Text>
