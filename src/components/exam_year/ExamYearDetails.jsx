@@ -64,13 +64,13 @@ const ExamYearDetails = () => {
                     const crResponse = await axios.get(`http://localhost:5002/api/class-representative/${exam_year_id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
-            
+
                     // Assuming crResponse.data is an array and you want the first item
                     const classRepData = crResponse.data[0];
                     setClassRepresentative(classRepData);
-            
+
                     console.log(classRepData.student_id);
-            
+
                     // Fetch student profile if student_id is present
                     if (classRepData?.student_id) {
                         const studentProfileResponse = await axios.get(`http://localhost:5002/api/student-profile/${classRepData.student_id}`, {
@@ -86,7 +86,7 @@ const ExamYearDetails = () => {
                     }
                 }
             };
-            
+
 
             fetchExamDetails();
             fetchExamCommittee();
@@ -138,6 +138,12 @@ const ExamYearDetails = () => {
                         <Row>
                             <Col>{studentProfile.student.Name}</Col>
                             <Col>{studentProfile.department.Dept_Name}</Col>
+                            <Col>{classRepresentative.role}</Col>
+                            <Col>
+                                <Link to={`/class-representative-details/${exam_year_id}`}>
+                                    View Profile
+                                </Link>
+                            </Col>
                         </Row>
                     </Card.Body>
                 </Card>
