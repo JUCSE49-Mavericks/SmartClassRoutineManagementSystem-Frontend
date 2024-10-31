@@ -57,6 +57,7 @@ import ExamYearDetailsPage from './pages/superuser/ExamYearDetailsPage';
 
 import CourseDetailsPage from './pages/course/CourseDetailsPage';
 import ClassRepresentativeDetails from './components/classRepresentative/ClassRepresentativeDetails';
+import AssignCourseTeacherPage from './pages/superuser/AssignCourseTeacherPage';
 
 const PrivateRoute = ({ children }) => {
   return getToken() ? children : <Navigate to="/su-login" />;
@@ -133,6 +134,7 @@ function App() {
         <Route path="/course-details/:course_id" element={<CourseDetailsPage/>} />
 
         <Route path="/class-representative-details/:exam_year_id" element={<ClassRepresentativeDetails/>} />
+        <Route path="/assign-course-teachers/:exam_year_id" element={<AssignCourseTeacherPage/>} />
 
         {/* Add other routes as needed */}
         <Route path="/" element={<Navigate to="/welcome-page" />} /> 
