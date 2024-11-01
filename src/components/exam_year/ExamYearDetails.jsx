@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Card, Container, ListGroup, Row, Col, Button } from 'react-bootstrap';
+import { Card, Container, ListGroup, Row, Col, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 
 import '../../App.css';
 
@@ -15,7 +15,11 @@ const ExamYearDetails = () => {
     const [teachers, setTeachers] = useState([]);
     const [assignedCourseTeacher, setAssignedCourseTeacher] = useState([]);
     const [assignedCourses, setAssignedCourses] = useState([]);
+    const [departmentTeachers, setDepartmentTeachers] = useState([]);
+    const [selectedTeacher, setSelectedTeacher] = useState(null);
+    const [showUpdateDropdown, setShowUpdateDropdown] = useState(false);
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -138,12 +142,30 @@ const ExamYearDetails = () => {
                 }
             };
 
+            const fetchDepartmentTeachers = async () => {
+                try {
+                    const departmentTeacherResponse = await axios.get(`http://localhost:5002/api/teacher-by-exam-year/${exam_year_id}`, {
+                        headers: { Authorization: `Bearer ${token}` }
+                    });
+                    setAssignedCourses(departmentTeacherResponse.data);
+                    console.log('ashche', departmentTeacherResponse.data);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    if (error.response && error.response.status === 401) {
+                        navigate('/login');
+                    }
+                }
+            };
+
+
             fetchAssignedCourses();
             fetchExamDetails();
             fetchExamCommittee();
             fetchCourses();
             fetchClassRepresentative();
             fetchAllTeacher();
+
+            fetchDepartmentTeachers();
         } else {
             navigate('/login');
         }
@@ -156,6 +178,36 @@ const ExamYearDetails = () => {
     useEffect(() => {
         console.log('Teacher List: ', teachers);
     }, [teachers]);
+
+    const fetchExamCommittee = async () => {
+        try {
+            const examCommitteeResponse = await axios.get(`http://localhost:5002/api/exam-committee-exam-year/${exam_year_id}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setExamCommittee(Array.isArray(examCommitteeResponse.data) ? examCommitteeResponse.data : [examCommitteeResponse.data]);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            if (error.response && error.response.status === 401) {
+                navigate('/login');
+            }
+        }
+    };
+
+    const handleUpdateCommitteeMember = async () => {
+        if (selectedTeacher) {
+            try {
+                await axios.post('http://localhost:5002/api/update-exam-committee', {
+                    exam_year_id,
+                    teacher_id: selectedTeacher
+                });
+                setShowUpdateDropdown(false);
+                setSelectedTeacher(null);
+                fetchExamCommittee();
+            } catch (error) {
+                console.error('Failed to update committee member:', error);
+            }
+        }
+    };
 
     const handleDeleteCommitteeMember = async (exam_committee_id) => {
         try {
@@ -215,6 +267,33 @@ const ExamYearDetails = () => {
             )}
 
             {/* Display Exam Committee Members */}
+            {/* <Card className="mb-4 shadow-lg">
+                <Card.Header className="bg-primary text-white text-center">
+                    <h4>Exam Committee Members</h4>
+                </Card.Header>
+                <Card.Body>
+                    <ListGroup className="mt-3">
+                        {examCommittee.length > 0 ? (
+                            examCommittee.map((committeeMember) => (
+                                <ListGroup.Item key={committeeMember.exam_committee_id}>
+                                    <Row>
+                                        <Col>{committeeMember.Name || 'No Name'}</Col>
+                                        <Col>{committeeMember.Designation || 'No Designation'}</Col>
+                                        <Col>
+                                            <Button variant="danger" onClick={() => handleDeleteCommitteeMember(committeeMember.exam_committee_id)}>
+                                                Delete
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                </ListGroup.Item>
+                            ))
+                        ) : (
+                            <p>No committee members found.</p>
+                        )}
+                    </ListGroup>
+                </Card.Body>
+            </Card> */}
+
             <Card className="mb-4 shadow-lg">
                 <Card.Header className="bg-primary text-white text-center">
                     <h4>Exam Committee Members</h4>
@@ -239,6 +318,29 @@ const ExamYearDetails = () => {
                             <p>No committee members found.</p>
                         )}
                     </ListGroup>
+                    <div className="mt-3 text-center">
+                        <Button variant="primary" onClick={() => setShowUpdateDropdown(!showUpdateDropdown)}>
+                            Update Exam Committee
+                        </Button>
+                        {showUpdateDropdown && (
+                            <DropdownButton
+                                className="mt-3"
+                                title="Select a teacher"
+                                onSelect={(teacher_id) => setSelectedTeacher(teacher_id)}
+                            >
+                                {departmentTeachers.map((teacher) => (
+                                    <Dropdown.Item key={teacher.teacher_id} eventKey={teacher.teacher_id}>
+                                        {teacher.Name}
+                                    </Dropdown.Item>
+                                ))}
+                            </DropdownButton>
+                        )}
+                        {selectedTeacher && (
+                            <Button variant="success" className="mt-3" onClick={handleUpdateCommitteeMember}>
+                                Confirm Update
+                            </Button>
+                        )}
+                    </div>
                 </Card.Body>
             </Card>
 
