@@ -65,13 +65,11 @@ const ExamYearDetails = () => {
                         headers: { Authorization: `Bearer ${token}` }
                     });
 
-                    // Assuming crResponse.data is an array and you want the first item
                     const classRepData = crResponse.data[0];
                     setClassRepresentative(classRepData);
 
                     console.log(classRepData.student_id);
 
-                    // Fetch student profile if student_id is present
                     if (classRepData?.student_id) {
                         const studentProfileResponse = await axios.get(`http://localhost:5002/api/student-profile/${classRepData.student_id}`, {
                             headers: { Authorization: `Bearer ${token}` }
@@ -86,7 +84,6 @@ const ExamYearDetails = () => {
                     }
                 }
             };
-
 
             fetchExamDetails();
             fetchExamCommittee();
@@ -104,6 +101,10 @@ const ExamYearDetails = () => {
         } catch (error) {
             console.error('Failed to delete committee member:', error);
         }
+    };
+
+    const handleUpdateClassRepresentative = () => {
+        navigate(`/update-class-representative/${exam_year_id}`);
     };
 
     if (!examYearDetails) {
@@ -145,6 +146,9 @@ const ExamYearDetails = () => {
                                 </Link>
                             </Col>
                         </Row>
+                        <Button variant="primary" onClick={handleUpdateClassRepresentative} className="mt-3">
+                            Update Class Representative
+                        </Button>
                     </Card.Body>
                 </Card>
             )}

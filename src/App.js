@@ -56,7 +56,8 @@ import StudentUpdatePage from './pages/superuser/StudentUpdatePage';
 import ExamYearDetailsPage from './pages/superuser/ExamYearDetailsPage';
 
 import CourseDetailsPage from './pages/course/CourseDetailsPage';
-// import ClassRepresentativeDetails from './components/classRepresentative/ClassRepresentativeDetails';
+import ClassRepresentativeDetails from './components/classRepresentative/ClassRepresentativeDetails';
+import UpdateClassRepresentativePage from './pages/superuser/UpdateClassRepresentativePage';
 
 const PrivateRoute = ({ children }) => {
   return getToken() ? children : <Navigate to="/su-login" />;
@@ -132,7 +133,8 @@ function App() {
 
         <Route path="/course-details/:course_id" element={<CourseDetailsPage/>} />
 
-        {/* <Route path="/class-representative-details/:exam_year_id" element={<ClassRepresentativeDetails/>} /> */}
+        <Route path="/class-representative-details/:exam_year_id" element={<ClassRepresentativeDetails/>} />
+        <Route path="/update-class-representative/:exam_year_id" element={<UpdateClassRepresentativePage/>} />
 
         {/* Add other routes as needed */}
         <Route path="/" element={<Navigate to="/welcome-page" />} /> 

@@ -10,4 +10,4 @@ function FileUploadPage() {
   )
 }
 
-export default FileUploadPage
+export default FileUploadPage;
