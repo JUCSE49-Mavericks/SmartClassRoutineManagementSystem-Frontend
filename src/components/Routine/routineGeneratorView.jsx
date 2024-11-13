@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 /**
- * Component for generating a department schedule.
+ * Component for generating SLOTS dynamically.
  * @component
  */
 const RoutineGenerator = () => {
@@ -21,10 +21,11 @@ const RoutineGenerator = () => {
     const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
-    /**
+     /**
      * Fetches department data on component mount.
      * Sets the `departments` state with data from the server.
      * @function
+     * @returns {void}
      */
     useEffect(() => {
         axios.get('http://localhost:5002/api/fetch-all-data')

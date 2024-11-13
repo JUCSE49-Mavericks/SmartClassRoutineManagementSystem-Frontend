@@ -7,6 +7,12 @@ import {Card,Button} from 'react-bootstrap';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
+/**
+ * 
+ * @param {*} items 
+ * @param {*} key 
+ * @returns 
+ */
 
 const getUniqueOptions = (items, key) => {
     const seen = new Set();

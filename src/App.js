@@ -28,7 +28,7 @@ import SyllabusUpload from './components/superuser/SyllabusUpload';
 import SyllabusUploadTest from './components/superuser/SyllabusUploadTest';
 import SyllabusFilter from './components/user/SyllabusFilter';
 import CourseDataDisplay from './components/superuser/CourseDataDisplay';
-import RoutineGenerator from './components/Routine/RoutineGenerator';
+import RoutineGenerator from './components/Routine/routineGeneratorView';
 import ScheduleViewer from './components/Routine/ScheduleViewer';
 import HolidaysUpload from './components/superuser/HolidaysUpload';
 import HolidayList from './components/superuser/HolidayList';
