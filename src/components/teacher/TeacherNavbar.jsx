@@ -29,7 +29,8 @@ const TeacherNavbar = () => {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setData(response.data);
-            setUser(response.data.teacher); // Assuming 'teacher' is the key holding the user data
+            setUser(response.data.teacher);
+            // console.log(response.data.teacher);
         } catch (error) {
             console.error('Failed to fetch dashboard data', error);
         }
@@ -40,6 +41,10 @@ const TeacherNavbar = () => {
     };
     const handleClassRoutine = () => {
         navigate('/class-routine-page');
+    };
+
+    const handleScheduleClass = () => {
+        navigate(`/schedule-class/${user.teacher_id}`)
     };
 
     const handleLogout = () => {
@@ -60,9 +65,9 @@ const TeacherNavbar = () => {
                         <FontAwesomeIcon icon={faHome} className="mr-1" />
                         Home
                     </Nav.Link>
-                    <Nav.Link href="#profile" className="text-light">
+                    <Nav.Link onClick={handleScheduleClass} className="text-light">
                         <FontAwesomeIcon icon={faCalendar} className="mr-1" />
-                        Class Routine
+                        Schedule Class
                     </Nav.Link>
                     <Nav.Link href="#courses" className="text-light">
                         <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
