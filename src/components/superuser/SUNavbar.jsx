@@ -52,9 +52,6 @@ function SUNavbar() {
         window.location.href = '/login';
     };
 
-    
-
-
     return (
         <div >
             <Navbar bg="primary" variant="dark" expand="lg" className="py-3 px-2">
@@ -81,8 +78,6 @@ function SUNavbar() {
                             <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
                             Academic Calendar
                         </Nav.Link>
-
-                        
 
                         <Nav.Link href="#settings" className="text-light">
                             <FontAwesomeIcon icon={faCog} className="mr-1" />

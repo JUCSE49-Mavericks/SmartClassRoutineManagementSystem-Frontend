@@ -59,7 +59,7 @@ import ScheduleClass from './components/teacher/ScheduleClass';
 import ViewAcademicCalendar from './components/ViewAcademicCalendar';
 import ViewClassRoutine from './components/ViewClassRoutine';
 import PreferredSlots from './components/teacher/PreferredSlots';
-
+import PendingRequests from './components/examCommittee/HandleRescheduleRequestedClass';
 
 
 const PrivateRoute = ({ children }) => {
@@ -138,6 +138,8 @@ function App() {
         <Route path="/view-academic-calendar" element={<ViewAcademicCalendar/>}/>
         <Route path="/class-routine-page" element={<ViewClassRoutine/>}/>
         <Route path="/preferred-slots/:teacher_id" element={<PreferredSlots/>}/>
+
+        <Route path="/approve-rescheduling-request" element={<PendingRequests/>}/>
 
         {/* Add other routes as needed */}
         <Route path="/" element={<Navigate to="/welcome-page" />} /> 
